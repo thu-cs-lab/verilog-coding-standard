@@ -98,9 +98,27 @@ end
 
 如果使用了条件语句 `if`，需要保证信号在每个可能的分支途径下都进行了赋值。
 
+```sv
+// GOOD
+always_comb begin
+  if (reset_n) begin
+    c = a + b;
+  end else begin
+    c = 1'b0;
+  end
+end
+
+// BAD
+always_comb begin
+  if (reset_n) begin
+    c = a + b;
+  end
+end
+```
+
 ### `always @(posedge clock)` 和 `always_ff` 块
 
-当需要表示组合逻辑时，使用以下的写法：
+当需要表示时序逻辑时，使用以下的写法：
 
 ```sv
 // Verilog
