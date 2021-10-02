@@ -72,6 +72,20 @@ always_ff @(posedge clock) begin
 end
 ```
 
+对于常量信号，请使用 `wire` 类型并用 `assign` 进行赋值，而不要用 `reg`：
+
+```sv
+// GOOD
+wire one;
+assign one = 1'b1;
+
+// BAD
+reg one;
+always @(*) begin
+  one = 1'b1;
+end
+```
+
 ## `always` 块的使用
 
 建议仅使用两类 `always` 块，分别对应组合逻辑和组合逻辑，下面会进行介绍。
