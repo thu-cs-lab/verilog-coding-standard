@@ -25,6 +25,10 @@ module test(
 );
   wire rst;
 
+  // GOOD
+  assign rst = ~rst_n;
+
+  // GOOD
   // Verilog
   always @(*) begin
     rst = ~rst_n;
