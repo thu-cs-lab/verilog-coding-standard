@@ -24,6 +24,13 @@ module test(
   input rst_n
 );
   wire rst;
+
+  // Verilog
+  always @(*) begin
+    rst = ~rst_n;
+  end
+
+  // System Verilog
   always_comb begin
     rst = ~rst_n;
   end
@@ -70,6 +77,7 @@ end
 当需要表示组合逻辑时，使用以下的写法：
 
 ```sv
+// Verilog
 always @(posedge clock) begin
   c <= a + b;
 end
@@ -87,6 +95,16 @@ end
 对于 FPGA，请使用同步复位：
 
 ```sv
+// Verilog
+always @(posedge clock) begin
+  if (reset) begin
+    c <= 1'b0;
+  end else begin
+    c <= a + b;
+  end
+end
+
+// System Verilog
 always_ff @(posedge clock) begin
   if (reset) begin
     c <= 1'b0;
