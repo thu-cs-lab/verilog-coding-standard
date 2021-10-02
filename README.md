@@ -46,6 +46,32 @@ endmodule
 
 推荐对于所有组合逻辑产生的信号，都采用 `wire` 类型；对于所有寄存器，都采用 `reg` 类型。
 
+```sv
+// GOOD
+wire c;
+always_comb begin
+  c = a + b;
+end
+
+// BAD
+reg c;
+always_comb begin
+  c = a + b;
+end
+
+// GOOD
+reg c;
+always_ff @(posedge clock) begin
+  c <= a + b;
+end
+
+// BAD
+wire c;
+always_ff @(posedge clock) begin
+  c <= a + b;
+end
+```
+
 ## `always` 块的使用
 
 建议仅使用两类 `always` 块，分别对应组合逻辑和组合逻辑，下面会进行介绍。
