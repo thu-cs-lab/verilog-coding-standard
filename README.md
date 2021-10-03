@@ -48,7 +48,7 @@ endmodule
 
 ## 信号类型
 
-推荐对于所有组合逻辑产生的信号，都采用 `wire` 类型；对于所有寄存器，都采用 `reg` 类型。
+推荐对于所有组合逻辑产生的信号，都采用 `wire` 类型；对于所有寄存器，都采用 `reg` 类型。不推荐使用 `logic` 类型。
 
 ```sv
 // GOOD
@@ -199,6 +199,26 @@ endmodule
 
 FPGA 内部的模块之间请不要使用 `inout`。
 
+## 在变量声明处赋值
+
+不要在变量声明处赋值，因为不同的类型赋值的意义不同：
+
+```sv
+// Wire
+wire signal = 1;
+// Equals to
+wire signal;
+assign signal = 1;
+
+// Reg
+reg signal = 1;
+// Equals to
+initial signal = 1;
+```
+
+不建议在声明处赋值，而是采用等价的写法，来区分不同的语义。
+
+在 FPGA 中，寄存器可以有初始值，即在 FPGA 进行配置时复位到初始值，但通常情况下还需要在自定义的 reset 信号有效时复位。
 
 ## 其他可参考的 Verilog 编程规范
 
