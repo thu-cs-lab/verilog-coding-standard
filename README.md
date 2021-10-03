@@ -213,6 +213,7 @@ assign signal = 1;
 // Reg
 reg signal = 1;
 // Equals to
+reg signal;
 initial signal = 1;
 ```
 
