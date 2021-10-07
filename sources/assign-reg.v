@@ -5,8 +5,14 @@ module test(
   output c
 );
 
-  reg reg_a = 0;
-  reg reg_b = 0;
+  reg reg_a;
+  reg reg_b;
+
+  initial begin
+    reg_a = 0;
+    reg_b = 0;
+  end
+
   reg reg_c;
   assign c = reg_c;
 

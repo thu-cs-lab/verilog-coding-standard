@@ -5,7 +5,7 @@ module test(
   wire a;
   wire b;
 
-  always @(*) begin
+  always_comb begin
     a = 0;
     b = 0;
     c = a + b;
