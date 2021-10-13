@@ -136,6 +136,15 @@ always_comb begin
 end
 ```
 
+请不要列举敏感信号：
+
+```sv
+// BAD
+always @ (b, c) begin
+  a = b + c;
+end
+```
+
 ### `always @(posedge clock)` 和 `always_ff` 块
 
 当需要表示时序逻辑时，使用以下的写法：
@@ -152,7 +161,28 @@ always_ff @(posedge clock) begin
 end
 ```
 
-这里所有的赋值请使用非阻塞赋值（`<=`）。
+这里所有的赋值请使用非阻塞赋值（`<=`）。通常情况下，请不要使用下降沿触发，或者用非时钟/复位信号的边沿触发：
+
+```sv
+// BAD: do not use negedge
+always @ (negedge clock) begin
+end
+
+// BAD: do not use non-clock/reset signals
+always @ (posedge signal) begin
+end
+```
+
+请不要在时序逻辑中使用时钟信号：
+
+```sv
+// BAD
+always @ (posedge clock) begin
+  if (clock) begin
+    a <= 1;
+  end
+end
+```
 
 ## 复位的使用
 
@@ -222,6 +252,40 @@ initial signal = 1;
 不建议在声明处赋值，而是采用等价的写法，来区分不同的语义。
 
 在 FPGA 中，寄存器可以有初始值，即在 FPGA 进行配置时复位到初始值，但通常情况下还需要在自定义的 reset 信号有效时复位。
+
+## 状态机
+
+编写状态机的时候，用 `localparam` 命名各个状态：
+
+```sv
+// GOOD
+localparam sInit = 2'd0;
+localparam sIdle = 2'd1;
+localparam sWork = 2'd2;
+localparam sDone = 2'd3;
+
+reg [1:0] state;
+```
+
+如果仿真工具不支持在波形中显示为对应的状态名称，可以采用以下的方法：
+
+```sv
+`ifndef SYNTHESIS
+  reg [39:0] state_string; // 40 bits = 5 byte
+
+  always @ (*) begin
+    case(state)
+      sInit: state_string = "sInit";
+      sIdle: state_string = "sIdle";
+      sWork: state_string = "sWork";
+      sDone: state_string = "sDone";
+      default: state_string = "?????";
+    endcase
+  end
+`endif
+```
+
+此时在仿真波形中，`state_string` 信号就可以看到状态的名称了。
 
 ## 其他可参考的 Verilog 编程规范
 
