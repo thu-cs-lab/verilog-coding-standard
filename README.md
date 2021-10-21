@@ -52,7 +52,7 @@ endmodule
 
 推荐对于所有组合逻辑产生的信号，都采用 `wire` 类型；对于所有寄存器，都采用 `reg` 类型。不推荐使用 `logic` 类型。
 
-严格来说，Verilog 和 SystemVerilog 不允许对 `wire` 类型进行 Procedural Assignment，也就是在 `always` 块中进行赋值，但很多环境中这个约束可以不遵守。笔者认为这是 Verilog 的一个设计里比较失败的一点。
+严格来说，Verilog 和 SystemVerilog 不允许对 `wire` 类型进行 Procedural Assignment，也就是在 `always` 块中进行赋值，但很多环境中这个约束可以不遵守。笔者认为这是 Verilog 的一个设计里比较失败的一点。如果采用 Vivado 等不允许对 `wire` 进行 Procedural Assignment 的 EDA 软件，可以考虑都用 `reg` 类型，然后通过名字来区分：`r_` 开头都是寄存器，`w_` 开头都是组合逻辑。
 
 ```sv
 // GOOD
